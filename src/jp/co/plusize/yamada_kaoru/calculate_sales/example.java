@@ -95,23 +95,38 @@ while((com = br.readLine()) != null) {
 		String path = salelist.get(f).toString();
 		FileReader fr = new FileReader(path);
         BufferedReader br = new BufferedReader(fr);
-        while((sales = br.readLine()) != null) {
-        	String[] code = sales.split("\n");
-        	if(brunchsalemap.get(code[0]) != null){
 
+        ArrayList<String> examplelist = new ArrayList<String>();
+        while((sales = br.readLine()) != null) {
+        	examplelist.add(sales);
+        }
+
+        	long c = Long.parseLong(examplelist.get(2));
+        	long x = brunchsalemap.get(examplelist.get(0))+ c;
+        	brunchsalemap.put(examplelist.get(0).toString(),x);
         	}
 
-	}
-		}
+
+		System.out.println(brunchsalemap.entrySet());
+
+
+
+
+
+
+
+
 
 
 	}
 	catch(IOException e){
 	        System.exit(1);
 	}
-	}
+
 
 	}
+}
+
 
 
 
