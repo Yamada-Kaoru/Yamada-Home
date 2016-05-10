@@ -135,7 +135,7 @@ public class example {
 		        	  System.out.println("<"+path+">の商品コードが不正です");
 		        	  System.exit(1);
 		        }
-	        }
+			}	        
 		}
 		catch(IOException e){
 			System.out.println("予期せぬエラーが発生しました");
