@@ -46,6 +46,8 @@ public class example {
 			System.err.println("予期せぬエラーが発生しました");
 			System.exit(1);
 		}
+		finally{
+		}
 
 
 		HashMap<String,String> commap = new HashMap<String,String>();//商品マップ作成
@@ -75,6 +77,8 @@ public class example {
 	    }catch(IOException e){
 	        System.err.println("予期せぬエラーが発生しました");
 	        System.exit(1);
+		}
+	    finally{
 		}
 
 	    ArrayList numberlist = new ArrayList();//.rcdリスト
@@ -141,6 +145,8 @@ public class example {
 			System.out.println("予期せぬエラーが発生しました");
 		        System.exit(1);
 		}
+		finally{
+		}
 
 		List<Entry<String,Long>> entries = new ArrayList<Entry<String,Long>>(brunchsalemap.entrySet());
 		Collections.sort(entries, new Comparator<Entry<String,Long>>() {
@@ -161,6 +167,8 @@ public class example {
 			System.out.println("予期せぬエラーが発生しました");
 			System.exit(1);
 		}
+		finally{
+		}
 
 		List<Entry<String,Long>> entry = new ArrayList<Entry<String,Long>>(comsalemap.entrySet());
 		Collections.sort(entry, new Comparator<Entry<String,Long>>() {
@@ -180,6 +188,8 @@ public class example {
 		}catch (IOException e){
 			System.out.println("予期せぬエラーが発生しました");
 			System.exit(1);
+		}
+		finally{
 		}
 	}
 }
