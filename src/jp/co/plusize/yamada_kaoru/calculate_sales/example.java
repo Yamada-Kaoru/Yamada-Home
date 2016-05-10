@@ -71,7 +71,7 @@ public class example {
 		   }else{
 				System.err.println("商品定義ファイルが存在しません");
 				System.exit(1);
-			}
+		   }
 	    }catch(IOException e){
 	        System.err.println("予期せぬエラーが発生しました");
 	        System.exit(1);
