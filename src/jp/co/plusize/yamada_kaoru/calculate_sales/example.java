@@ -90,7 +90,7 @@ public class example {
 			    	int s = Short.parseShort(numberlist.get(0).toString().substring(0,8));
 					int l =numberlist.size();
 					int m =Short.parseShort(numberlist.get(numberlist.size()-1).toString().substring(0,8));
-					if(s + l - 1 == m){//連番かどうか判断(
+					if(s + l - 1 == m){
 						salelist.add(files[i]);
 					}else{
 						System.out.println("売上ファイルが連番になっていません");
@@ -135,7 +135,7 @@ public class example {
 		        	  System.out.println("<"+path+">の商品コードが不正です");
 		        	  System.exit(1);
 		        }
-			}	        
+			}
 		}
 		catch(IOException e){
 			System.out.println("予期せぬエラーが発生しました");
@@ -145,9 +145,9 @@ public class example {
 		List<Entry<String,Long>> entries = new ArrayList<Entry<String,Long>>(brunchsalemap.entrySet());
 		Collections.sort(entries, new Comparator<Entry<String,Long>>() {
 		    public int compare(Entry<String,Long> o1, Entry<String, Long> o2) {
-		    	return o2.getValue().compareTo(o1.getValue());    //降順
+		    	return o2.getValue().compareTo(o1.getValue());
 		    }
-		});//Comparator で Map.Entry の値を比較
+		});
 		try{
 			File brunchfile = new File(args[0]+"\\brunch.out");
 			FileWriter fw = new FileWriter(brunchfile);
@@ -165,9 +165,9 @@ public class example {
 		List<Entry<String,Long>> entry = new ArrayList<Entry<String,Long>>(comsalemap.entrySet());
 		Collections.sort(entry, new Comparator<Entry<String,Long>>() {
 		    public int compare(Entry<String,Long> o1, Entry<String, Long> o2) {
-		    	return o2.getValue().compareTo(o1.getValue());    //降順
+		    	return o2.getValue().compareTo(o1.getValue());
 		    }
-		});//Comparator で Map.Entry の値を比較
+		});
 		try{
 			File comfile = new File(args[0]+"\\commodity.out");
 			FileWriter fw = new FileWriter(comfile);
