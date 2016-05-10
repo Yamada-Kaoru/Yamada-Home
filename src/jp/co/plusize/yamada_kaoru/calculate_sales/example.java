@@ -85,6 +85,7 @@ public class example {
 	    ArrayList salelist = new ArrayList();//連番チェック済みリスト
 	    String sales;//読み込む内容
 
+
 	    File file = new File(args[0]);
 		File files[] = file.listFiles();
 		for (int i=0; i<files.length; i++) {
