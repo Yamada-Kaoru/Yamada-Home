@@ -60,7 +60,7 @@ public class example {
 
            while((commodity = br.readLine()) != null) {
         	   String[] mom = commodity.split(",");
-        	   if(mom[0].length() !=3 ||mom.length !=2 ){
+        	   if(mom[0].length() !=8 ||mom.length !=2 ){
            		System.err.println("商品定義ファイルのフォーマットが不正です");
            		System.exit(1);
            	}
@@ -131,7 +131,7 @@ public class example {
 		        	  System.out.println("<"+path+">の支店コードが不正です");
 		        	  System.exit(1);
 		        }
-		        if(comsalemap.containsKey(examplelist.get(0)) != true ){
+		        if(comsalemap.containsKey(examplelist.get(1)) != true ){
 		        	  System.out.println("<"+path+">の商品コードが不正です");
 		        	  System.exit(1);
 		        }
