@@ -17,24 +17,24 @@ import java.util.Map.Entry;
 
 public class CalculateSales {
 	public static void main(String args[]) throws IOException{
-		HashMap<String,String> brunchMap = new HashMap<String,String>();//支店マップ作成
-		HashMap<String,Long> brunchSaleMap = new HashMap<String,Long>();//支店売上マップ作成
-		String brunch;//読み込んだ内容
+		HashMap<String,String> branchMap = new HashMap<String,String>();//支店マップ作成
+		HashMap<String,Long> branchSaleMap = new HashMap<String,Long>();//支店売上マップ作成
+		String branch;//読み込んだ内容
 		BufferedReader br = null;
 
 		try{
-			File file = new File(args[0], "brunch.lst");
+			File file = new File(args[0], "branch.lst");
 			if (file.exists()){//ファイルがあるかどうか
 				FileReader fr = new FileReader(file);
 				br = new BufferedReader(fr);
-				while((brunch = br.readLine()) != null) {
-	            	String[] item = brunch.split(",");//コード,支店名で分割
+				while((branch = br.readLine()) != null) {
+	            	String[] item = branch.split(",");
 	            	if(item[0].length() != 3 || item.length != 2 || item[0].matches("^[0-9]*$") != true ){
 	            		System.out.println("支店定義ファイルのフォーマットが不正です");
 	            		return;
 	            	}
-	            	brunchMap.put(item[0],item[1]);//コードと支店名の紐付け
-	            	brunchSaleMap.put(item[0],(long) 0);
+	            	branchMap.put(item[0],item[1]);
+	            	branchSaleMap.put(item[0],(long) 0);
 				}
 			}else{
 				System.out.println("支店定義ファイルが存在しません");
@@ -123,17 +123,17 @@ public class CalculateSales {
 		    		return;
 		        }
 		        long j = Long.parseLong(exampleList.get(2));
-		        long k = brunchSaleMap.get(exampleList.get(0))+ j;
+		        long k = branchSaleMap.get(exampleList.get(0))+ j;
 		        long l = commoditySaleMap.get(exampleList.get(1)) + j;
 
-		        brunchSaleMap.put(exampleList.get(0).toString(),k);//支店別売上加算
+		        branchSaleMap.put(exampleList.get(0).toString(),k);//支店別売上加算
 		        commoditySaleMap.put(exampleList.get(1).toString(),l);//商品別売上加算
 
-		        if(brunchSaleMap.get(exampleList.get(0)).toString().length() > 10|| commoditySaleMap.get(exampleList.get(1)).toString().length() > 10){
+		        if(branchSaleMap.get(exampleList.get(0)).toString().length() > 10|| commoditySaleMap.get(exampleList.get(1)).toString().length() > 10){
 		        	System.out.println("合計金額が10桁を超えました");
 		        	return;
 	        	}
-		        if(brunchSaleMap.containsKey(exampleList.get(0)) != true ){
+		        if(branchSaleMap.containsKey(exampleList.get(0)) != true ){
 		        	System.out.println("<"+path+">の支店コードが不正です");
 		        	return;
 		        }
@@ -154,20 +154,20 @@ public class CalculateSales {
 		}
 
 
-		List<Entry<String,Long>> brunchEntries = new ArrayList<Entry<String,Long>>(brunchSaleMap.entrySet());
+		List<Entry<String,Long>> branchEntries = new ArrayList<Entry<String,Long>>(branchSaleMap.entrySet());
 		BufferedWriter bw = null;
 
-		Collections.sort(brunchEntries, new Comparator<Entry<String,Long>>() {
+		Collections.sort(branchEntries, new Comparator<Entry<String,Long>>() {
 		    public int compare(Entry<String,Long> o1, Entry<String, Long> o2) {
 		    	return o2.getValue().compareTo(o1.getValue());
 		    }
 		});
 		try{
-			File brunchFile = new File(args[0], "\\brunch.out");
-			FileWriter fw = new FileWriter(brunchFile);
+			File branchFile = new File(args[0], "\\branch.out");
+			FileWriter fw = new FileWriter(branchFile);
 			bw = new BufferedWriter(fw);
-			for (Entry<String, Long> be : brunchEntries) {
-				bw.write(be.getKey()+","+brunchMap.get(be.getKey())+","+ be.getValue());
+			for (Entry<String, Long> be : branchEntries) {
+				bw.write(be.getKey()+","+branchMap.get(be.getKey())+","+ be.getValue());
 				bw.newLine();
 			}
 		}catch (IOException e){
