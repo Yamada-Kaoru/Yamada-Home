@@ -24,6 +24,10 @@ public class CalculateSales {
 
 		try{
 			File file = new File(args[0], "branch.lst");
+			if (args.length != 1){
+				System.out.println("予期せぬエラーが発生しました");
+				return;
+			}
 			if (file.exists()){//ファイルがあるかどうか
 				FileReader fr = new FileReader(file);
 				br = new BufferedReader(fr);
@@ -41,6 +45,9 @@ public class CalculateSales {
 				return;
 			}
 		}catch(IOException e){
+			System.out.println("予期せぬエラーが発生しました");
+			return;
+		}catch(ArrayIndexOutOfBoundsException e){
 			System.out.println("予期せぬエラーが発生しました");
 			return;
 		}
@@ -62,7 +69,7 @@ public class CalculateSales {
 	           br = new BufferedReader(fr);
 	           while((commodity = br.readLine()) != null) {
 	        	   String[] item = commodity.split(",");
-	        	   if(item[0].length() !=8 ||item.length !=2 ){
+	        	   if(item[0].length() !=8 || item.length != 2 || item[0].matches("^SFT[0-9]*$") != true ){
 	           		System.err.println("商品定義ファイルのフォーマットが不正です");
 	           		return;
 	           	}
@@ -76,6 +83,9 @@ public class CalculateSales {
 	    }catch(IOException e){
 	        System.out.println("予期せぬエラーが発生しました");
 	        return;
+	    }catch(ArrayIndexOutOfBoundsException e){
+			System.out.println("予期せぬエラーが発生しました");
+			return;
 		}
 	    finally{
 	    	if (br != null) {
@@ -87,30 +97,36 @@ public class CalculateSales {
 	    ArrayList<File> saleList = new ArrayList<File>();//連番チェック済みリスト
 	    String sales;//読み込む内容
 
-
 	    File file = new File(args[0]);
 		File files[] = file.listFiles();
 		for (int i=0; i<files.length; i++) {
 			if(files[i].toString().endsWith(".rcd")){
-			    if(files[i].getName().toString().length()==12){
-			    	numberList.add(files[i].getName());
-			    	int j = Short.parseShort(numberList.get(0).toString().substring(0,8));
-					int k =numberList.size();
-					int l =Short.parseShort(numberList.get(numberList.size()-1).toString().substring(0,8));
-					if(j + k - 1 == l){
-						saleList.add(files[i]);
-					}else{
-						System.out.println("売上ファイルが連番になっていません");
-						return;
-					}
-			    }
+				if(files[i].toString().startsWith("0")){
+					if(files[i].getName().toString().length()==12){
+				    	numberList.add(files[i].getName());
+				    	int j = Short.parseShort(numberList.get(0).toString().substring(0,8));
+						int k =numberList.size();
+						int l =Short.parseShort(numberList.get(numberList.size()-1).toString().substring(0,8));
+						if(j + k - 1 == l){
+							saleList.add(files[i]);
+						}else{
+							System.out.println("売上ファイル名が連番になっていません");
+							return;
+						}
+				    }
+				}
+			}else{
+				System.out.println("売上ファイル名が連番になっていません");
+				return;
 			}
-		}
+	}
+
 
 
 		try{
 			for(int i = 0; i<saleList.size(); i++){
 				String path = saleList.get(i).toString();
+				String fileName = files[i].getName().toString();
 				FileReader fr = new FileReader(path);
 		        br = new BufferedReader(fr);
 
@@ -119,7 +135,7 @@ public class CalculateSales {
 		        	exampleList.add(sales);
 		        }
 		        if(exampleList.size() != 3 ){
-		    		System.out.println("<"+path+">のフォーマットが不正です");
+		    		System.out.println("<"+ fileName +">のフォーマットが不正です");
 		    		return;
 		        }
 		        long j = Long.parseLong(exampleList.get(2));
@@ -134,11 +150,11 @@ public class CalculateSales {
 		        	return;
 	        	}
 		        if(branchSaleMap.containsKey(exampleList.get(0)) != true ){
-		        	System.out.println("<"+path+">の支店コードが不正です");
+		        	System.out.println("<"+ fileName +">の支店コードが不正です");
 		        	return;
 		        }
 		        if(commoditySaleMap.containsKey(exampleList.get(1)) != true ){
-		        	System.out.println("<"+path+">の商品コードが不正です");
+		        	System.out.println("<"+ fileName +">の商品コードが不正です");
 		        	return;
 		        }
 			}
@@ -163,7 +179,7 @@ public class CalculateSales {
 		    }
 		});
 		try{
-			File branchFile = new File(args[0], "\\branch.out");
+			File branchFile = new File(args[0], "branch.out");
 			FileWriter fw = new FileWriter(branchFile);
 			bw = new BufferedWriter(fw);
 			for (Entry<String, Long> be : branchEntries) {
@@ -173,12 +189,16 @@ public class CalculateSales {
 		}catch (IOException e){
 			System.out.println("予期せぬエラーが発生しました");
 			return;
+		}catch(ArrayIndexOutOfBoundsException e){
+			System.out.println("予期せぬエラーが発生しました");
+			return;
 		}
-		finally{
-			if (br != null) {
-			br.close();
-			}
+	    finally{
+	    	if (bw != null) {
+				bw.close();
+	    	}
 		}
+
 
 
 		List<Entry<String,Long>> commodityEntries = new ArrayList<Entry<String,Long>>(commoditySaleMap.entrySet());
@@ -199,12 +219,17 @@ public class CalculateSales {
 		}catch (IOException e){
 			System.out.println("予期せぬエラーが発生しました");
 			return;
+		}catch(ArrayIndexOutOfBoundsException e){
+			System.out.println("予期せぬエラーが発生しました");
+			return;
 		}
 		finally{
-			if (br != null) {
-				br.close();
+			if (bw != null) {
+				bw.close();
 			}
 		}
 	}
 }
+
+
 
