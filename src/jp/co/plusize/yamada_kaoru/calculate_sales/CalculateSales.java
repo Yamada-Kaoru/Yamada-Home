@@ -208,7 +208,7 @@ public class CalculateSales {
 		    }
 		});
 		try{
-			File commodityFile = new File(args[0], "\\commodity.out");
+			File commodityFile = new File(args[0], "commodity.out");
 			FileWriter fw = new FileWriter(commodityFile);
 			bw = new BufferedWriter(fw);
 			for (Entry<String, Long> ce : commodityEntries) {
