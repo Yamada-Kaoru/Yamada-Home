@@ -13,6 +13,8 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 
@@ -30,9 +32,11 @@ public class example {
 
             while((brunch = br.readLine()) != null) {
             	String[] item = brunch.split(",");//コード,支店名で分割
-            	if(item[0].length() !=3 || item.length !=2 ){
+            	Pattern p = Pattern.compile("^[0-9]*$");
+            	Matcher m = p.matcher(item[0]);
+            	if(item[0].length() !=3 || item.length !=2 || m.find() != true ){
             		System.err.println("支店定義ファイルのフォーマットが不正です");
-            		System.exit(1);
+            		return;
             	}
             	brunchmap.put(item[0],item[1]);//コードと支店名の紐付け
             	brunchsalemap.put(item[0],(long) 0);
@@ -40,14 +44,13 @@ public class example {
             br.close();
 			}else{
 				System.err.println("支店定義ファイルが存在しません");
-				System.exit(1);
+				return;
 			}
 		}catch(IOException e){
 			System.err.println("予期せぬエラーが発生しました");
-			System.exit(1);
+			return;
 		}
-		finally{
-		}
+
 
 
 		HashMap<String,String> commap = new HashMap<String,String>();//商品マップ作成
@@ -64,7 +67,7 @@ public class example {
         	   String[] mom = commodity.split(",");
         	   if(mom[0].length() !=8 ||mom.length !=2 ){
            		System.err.println("商品定義ファイルのフォーマットが不正です");
-           		System.exit(1);
+           		return;
            	}
         	   commap.put(mom[0],mom[1]);
         	   comsalemap.put(mom[0],(long) 0);
@@ -72,13 +75,11 @@ public class example {
            br.close();
 		   }else{
 				System.err.println("商品定義ファイルが存在しません");
-				System.exit(1);
+				return;
 		   }
 	    }catch(IOException e){
 	        System.err.println("予期せぬエラーが発生しました");
-	        System.exit(1);
-		}
-	    finally{
+	        return;
 		}
 
 	    ArrayList numberlist = new ArrayList();//.rcdリスト
@@ -98,8 +99,8 @@ public class example {
 					if(s + l - 1 == m){
 						salelist.add(files[i]);
 					}else{
-						System.out.println("売上ファイルが連番になっていません");
-						System.exit(1);
+						System.err.println("売上ファイルが連番になっていません");
+						return;
 					}
 			    }
 			}
@@ -118,7 +119,7 @@ public class example {
 		        }
 		        if(examplelist.size() != 3 ){
 		    		System.out.println("<"+path+">のフォーマットが不正です");
-		    		System.exit(1);
+		    		return;
 		        }
 		        long o = Long.parseLong(examplelist.get(2));
 		        long b = brunchsalemap.get(examplelist.get(0))+ o;
@@ -130,24 +131,24 @@ public class example {
 		        if(brunchsalemap.get(examplelist.get(0)).toString().length() > 10
 		        		|| comsalemap.get(examplelist.get(1)).toString().length() > 10){
 		        	System.out.println("合計金額が10桁を超えました");
-		        	System.exit(1);
+		        	return;
 	        	}
 		        if(brunchsalemap.containsKey(examplelist.get(0)) != true ){
 		        	  System.out.println("<"+path+">の支店コードが不正です");
-		        	  System.exit(1);
+		        	  return;
 		        }
 		        if(comsalemap.containsKey(examplelist.get(1)) != true ){
 		        	  System.out.println("<"+path+">の商品コードが不正です");
-		        	  System.exit(1);
+		        	  return;
 		        }
+		        br.close();
 			}
 		}
 		catch(IOException e){
 			System.out.println("予期せぬエラーが発生しました");
-		        System.exit(1);
+			return;
 		}
-		finally{
-		}
+
 
 		List<Entry<String,Long>> entries = new ArrayList<Entry<String,Long>>(brunchsalemap.entrySet());
 		Collections.sort(entries, new Comparator<Entry<String,Long>>() {
@@ -166,10 +167,9 @@ public class example {
 			bw.close();
 		}catch (IOException e){
 			System.out.println("予期せぬエラーが発生しました");
-			System.exit(1);
+			return;
 		}
-		finally{
-		}
+
 
 		List<Entry<String,Long>> entry = new ArrayList<Entry<String,Long>>(comsalemap.entrySet());
 		Collections.sort(entry, new Comparator<Entry<String,Long>>() {
@@ -188,7 +188,7 @@ public class example {
 			bw.close();
 		}catch (IOException e){
 			System.out.println("予期せぬエラーが発生しました");
-			System.exit(1);
+			return;
 		}
 		finally{
 		}
