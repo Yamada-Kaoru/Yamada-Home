@@ -69,8 +69,8 @@ public class CalculateSales {
 	           br = new BufferedReader(fr);
 	           while((commodity = br.readLine()) != null) {
 	        	   String[] item = commodity.split(",");
-	        	   if(item[0].length() !=8 || item.length != 2 || item[0].matches("^SFT[0-9]*$") != true ){
-	           		System.err.println("商品定義ファイルのフォーマットが不正です");
+	        	   if(item[0].length() !=8 || item.length != 2 || item[0].matches("^[0-9a-zA-Z_]*$") != true ){
+	           		System.out.println("商品定義ファイルのフォーマットが不正です");
 	           		return;
 	           	}
 	        	   commodityMap.put(item[0],item[1]);
@@ -135,7 +135,7 @@ public class CalculateSales {
 		        	exampleList.add(sales);
 		        }
 		        if(exampleList.size() != 3 ){
-		    		System.out.println("<"+ fileName +">のフォーマットが不正です");
+		    		System.out.println( fileName +"のフォーマットが不正です");
 		    		return;
 		        }
 		        long j = Long.parseLong(exampleList.get(2));
@@ -150,11 +150,11 @@ public class CalculateSales {
 		        	return;
 	        	}
 		        if(branchSaleMap.containsKey(exampleList.get(0)) != true ){
-		        	System.out.println("<"+ fileName +">の支店コードが不正です");
+		        	System.out.println( fileName +"の支店コードが不正です");
 		        	return;
 		        }
 		        if(commoditySaleMap.containsKey(exampleList.get(1)) != true ){
-		        	System.out.println("<"+ fileName +">の商品コードが不正です");
+		        	System.out.println( fileName +"の商品コードが不正です");
 		        	return;
 		        }
 			}
