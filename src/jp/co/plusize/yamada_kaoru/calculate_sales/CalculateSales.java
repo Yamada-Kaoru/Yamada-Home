@@ -100,6 +100,7 @@ public class CalculateSales {
 	    File file = new File(args[0]);
 		File files[] = file.listFiles();
 		for (int i=0; i<files.length; i++) {
+			if(files[i].isFile() == true){
 			if(files[i].toString().endsWith(".rcd")){
 				if(files[i].getName().toString().startsWith("0")){
 					if(files[i].getName().toString().length()==12){
@@ -118,6 +119,10 @@ public class CalculateSales {
 					System.out.println("売上ファイル名が連番になっていません");
 					return;
 				}
+			}
+			}else{
+				System.out.println("売上ファイル名が連番になっていません");
+				return;
 			}
 		}
 
