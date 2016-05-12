@@ -16,6 +16,7 @@ import java.util.Map.Entry;
 
 
 public class CalculateSales {
+
 	public static void main(String args[]) throws IOException{
 		HashMap<String,String> branchMap = new HashMap<String,String>();//支店マップ作成
 		HashMap<String,Long> branchSaleMap = new HashMap<String,Long>();//支店売上マップ作成
@@ -171,7 +172,6 @@ public class CalculateSales {
 
 
 		List<Entry<String,Long>> branchEntries = new ArrayList<Entry<String,Long>>(branchSaleMap.entrySet());
-		BufferedWriter bw = null;
 
 		Collections.sort(branchEntries, new Comparator<Entry<String,Long>>() {
 			public int compare(Entry<String,Long> o1, Entry<String, Long> o2) {
@@ -179,27 +179,14 @@ public class CalculateSales {
 			}
 		});
 
-		try{
-			File branchFile = new File(args[0], "branch.out");
-			FileWriter fw = new FileWriter(branchFile);
-			bw = new BufferedWriter(fw);
-			for (Entry<String, Long> be : branchEntries) {
-				bw.write(be.getKey()+","+branchMap.get(be.getKey())+","+ be.getValue());
-				bw.newLine();
-			}
-		}catch (IOException e){
-			System.out.println("予期せぬエラーが発生しました");
-			return;
-		}catch(ArrayIndexOutOfBoundsException e){
-			System.out.println("予期せぬエラーが発生しました");
-			return;
-		}
-		finally{
-			if (bw != null) {
-				bw.close();
-			}
-		}
 
+		//メソッド呼び出し
+        String branchpath = args[0]+File.separator+"branch.out";
+		if(outPutFile(branchpath, branchMap , branchEntries )){
+		}else{
+			System.out.println("予期せぬエラーが発生しました");
+			return;
+		}
 
 
 		List<Entry<String,Long>> commodityEntries = new ArrayList<Entry<String,Long>>(commoditySaleMap.entrySet());
@@ -208,26 +195,41 @@ public class CalculateSales {
 		    	return o2.getValue().compareTo(o1.getValue());
 		    }
 		});
+
+		//メソッド呼び出し
+		String commodityPath = args[0]+File.separator+"commodity.out";
+		if(outPutFile(commodityPath, commodityMap , commodityEntries )){
+		}else{
+			System.out.println("予期せぬエラーが発生しました");
+			return;
+		}
+	}
+
+
+
+//ファイルに出力
+	static boolean outPutFile(String path,HashMap<String,String> map, List<Entry<String,Long>> entries) throws IOException{
+		BufferedWriter bw = null;
 		try{
-			File commodityFile = new File(args[0], "commodity.out");
-			FileWriter fw = new FileWriter(commodityFile);
+			File file  = new File(path);
+			FileWriter fw = new FileWriter(file);
 			bw = new BufferedWriter(fw);
-			for (Entry<String, Long> ce : commodityEntries) {
-				bw.write(ce.getKey()+","+commodityMap.get(ce.getKey())+","+ ce.getValue());
+			for (Entry<String, Long> e : entries) {
+				bw.write(e.getKey()+","+map.get(e.getKey())+","+ e.getValue());
 				bw.newLine();
 			}
-
 		}catch (IOException e){
-			System.out.println("予期せぬエラーが発生しました");
-			return;
+			return false;
 		}catch(ArrayIndexOutOfBoundsException e){
-			System.out.println("予期せぬエラーが発生しました");
-			return;
+			return false;
 		}
 		finally{
 			if (bw != null) {
 				bw.close();
+				return true;
 			}
 		}
+		return false;
 	}
 }
+
