@@ -95,7 +95,7 @@ public class CalculateSales {
 
 	    ArrayList<String> numberList = new ArrayList<String>();//.rcdリスト
 	    ArrayList<File> saleList = new ArrayList<File>();//連番チェック済みリスト
-	    String sales;//読み込む内容
+	    String sales;//ファイルの内容
 
 	    File file = new File(args[0]);
 		File files[] = file.listFiles();
