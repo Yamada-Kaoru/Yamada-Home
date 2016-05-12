@@ -69,8 +69,8 @@ public class CalculateSales {
 	           br = new BufferedReader(fr);
 	           while((commodity = br.readLine()) != null) {
 	        	   String[] item = commodity.split(",");
-	        	   if(item[0].length() !=8 || item.length != 2 || item[0].matches("^[0-9a-zA-Z_]*$") != true ){
-	           		System.out.println("商品定義ファイルのフォーマットが不正です");
+	        	   if(item[0].length() !=8 || item.length != 2 || item[0].matches("^SFT[0-9]*$") != true ){
+	           		System.err.println("商品定義ファイルのフォーマットが不正です");
 	           		return;
 	           	}
 	        	   commodityMap.put(item[0],item[1]);
@@ -100,8 +100,9 @@ public class CalculateSales {
 	    File file = new File(args[0]);
 		File files[] = file.listFiles();
 		for (int i=0; i<files.length; i++) {
-			if(files[i].toString().endsWith(".rcd") &&  files[i].isFile() &&
-			files[i].getName().toString().startsWith("0") && files[i].getName().toString().length()==12	){
+			if(files[i].toString().endsWith(".rcd")){
+				if(files[i].getName().toString().startsWith("0")){
+					if(files[i].getName().toString().length()==12){
 				    	numberList.add(files[i].getName());
 				    	int j = Short.parseShort(numberList.get(0).toString().substring(0,8));
 						int k =numberList.size();
@@ -112,11 +113,13 @@ public class CalculateSales {
 							System.out.println("売上ファイル名が連番になっていません");
 							return;
 						}
+				    }
 				}else{
 					System.out.println("売上ファイル名が連番になっていません");
 					return;
 				}
 			}
+		}
 
 
 
@@ -132,29 +135,29 @@ public class CalculateSales {
 		        	exampleList.add(sales);
 		        }
 		        if(exampleList.size() != 3 ){
-		    		System.out.println( fileName +"のフォーマットが不正です");
+		    		System.out.println("<"+ fileName +">のフォーマットが不正です");
 		    		return;
 		        }
 		        if(branchSaleMap.containsKey(exampleList.get(0)) != true ){
-		        	System.out.println( fileName +"の支店コードが不正です");
+		        	System.out.println("<"+ fileName +">の支店コードが不正です");
 		        	return;
 		        }
 		        if(commoditySaleMap.containsKey(exampleList.get(1)) != true ){
-		        	System.out.println( fileName +"の商品コードが不正です");
+		        	System.out.println("<"+ fileName +">の商品コードが不正です");
 		        	return;
-		        }else{
-		        	long j = Long.parseLong(exampleList.get(2));
-			        long k = branchSaleMap.get(exampleList.get(0))+ j;
-			        long l = commoditySaleMap.get(exampleList.get(1)) + j;
+		        }
+		        long j = Long.parseLong(exampleList.get(2));
+		        long k = branchSaleMap.get(exampleList.get(0))+ j;
+		        long l = commoditySaleMap.get(exampleList.get(1)) + j;
 
-			        branchSaleMap.put(exampleList.get(0).toString(),k);//支店別売上加算
-			        commoditySaleMap.put(exampleList.get(1).toString(),l);//商品別売上加算
+		        branchSaleMap.put(exampleList.get(0).toString(),k);//支店別売上加算
+		        commoditySaleMap.put(exampleList.get(1).toString(),l);//商品別売上加算
 
-			        if(branchSaleMap.get(exampleList.get(0)).toString().length() > 10|| commoditySaleMap.get(exampleList.get(1)).toString().length() > 10){
-			        	System.out.println("合計金額が10桁を超えました");
-			        	return;
-			        }
-				}
+		        if(branchSaleMap.get(exampleList.get(0)).toString().length() > 10|| commoditySaleMap.get(exampleList.get(1)).toString().length() > 10){
+		        	System.out.println("合計金額が10桁を超えました");
+		        	return;
+	        	}
+
 			}
 		}
 		catch(IOException e){
@@ -166,9 +169,6 @@ public class CalculateSales {
 				br.close();
 			}
 		}
-
-
-
 
 
 		List<Entry<String,Long>> branchEntries = new ArrayList<Entry<String,Long>>(branchSaleMap.entrySet());
@@ -231,6 +231,3 @@ public class CalculateSales {
 		}
 	}
 }
-
-
-
