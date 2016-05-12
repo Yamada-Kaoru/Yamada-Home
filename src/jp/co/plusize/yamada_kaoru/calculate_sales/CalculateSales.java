@@ -101,10 +101,7 @@ public class CalculateSales {
 
 					if(files[i].getName().substring(0,8).matches("^[0-9]{8}$")){
 						numberList.add(files[i].getName());
-						int first = Short.parseShort(numberList.get(0).toString().substring(0,8));
-						int volume =numberList.size();
-						int last =Short.parseShort(numberList.get(numberList.size()-1).toString().substring(0,8));
-						if(first + volume - 1 == last){
+						if(serialCheck(numberList, i )){
 							saleList.add(files[i]);
 						}else{
 							System.out.println("売上ファイル名が連番になっていません");
@@ -133,11 +130,11 @@ public class CalculateSales {
 					System.out.println(fileName +"のフォーマットが不正です");
 					return;
 				}
-				if(branchSaleMap.containsKey(exampleList.get(0)) != true ){
+				if(cordCheck(branchSaleMap,exampleList, 0)){
 					System.out.println( fileName +"の支店コードが不正です");
 					return;
 				}
-				if(commoditySaleMap.containsKey(exampleList.get(1)) != true ){
+				if(cordCheck(commoditySaleMap,exampleList, 1)){
 					System.out.println( fileName +"の商品コードが不正です");
 					return;
 				}
@@ -225,7 +222,21 @@ public class CalculateSales {
 		}
 		return false;
 	}
-
+//コードチェック
+	static boolean cordCheck(HashMap<String,Long> map,ArrayList<String> list, int n){
+	if(map.containsKey(list.get(n)) ){
+	}
+	return false;
+	}
+//連番チェック
+	static boolean serialCheck(ArrayList<String> list, int n ){
+		int first = Short.parseShort(list.get(0).toString().substring(0,8));
+		int volume =list.size();
+		int last =Short.parseShort(list.get(list.size()-1).toString().substring(0,8));
+		if(first + volume - 1 == last){
+	}
+		return true;
+	}
 }
 
 
