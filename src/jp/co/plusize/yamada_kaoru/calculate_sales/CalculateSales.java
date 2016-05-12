@@ -101,27 +101,29 @@ public class CalculateSales {
 		File files[] = file.listFiles();
 		for (int i=0; i<files.length; i++) {
 			if(files[i].isFile() == true){
-			if(files[i].toString().endsWith(".rcd")){
-				if(files[i].getName().toString().startsWith("0")){
-					if(files[i].getName().toString().length()==12){
-				    	numberList.add(files[i].getName());
-				    	int j = Short.parseShort(numberList.get(0).toString().substring(0,8));
-						int k =numberList.size();
-						int l =Short.parseShort(numberList.get(numberList.size()-1).toString().substring(0,8));
-						if(j + k - 1 == l){
-							saleList.add(files[i]);
-						}else{
-							System.out.println("売上ファイル名が連番になっていません");
-							return;
+				if(files[i].toString().endsWith(".rcd")){
+					if(files[i].getName().toString().startsWith("0")){
+						if(files[i].getName().toString().length()==12){
+					    	numberList.add(files[i].getName());
+					    	int j = Short.parseShort(numberList.get(0).toString().substring(0,8));
+							int k =numberList.size();
+							int l =Short.parseShort(numberList.get(numberList.size()-1).toString().substring(0,8));
+							if(j + k - 1 == l){
+								saleList.add(files[i]);
+							}else{
+								System.out.println("売上ファイル名が連番になっていません");
+								return;
+							}
 						}
+					}else{
+						System.out.println("売上ファイル名が連番になっていません");
+						return;
 					}
-				}else{
-					System.out.println("売上ファイル名が連番になっていません");
-					return;
 				}
 			}
-			}
 		}
+
+
 
 
 
