@@ -75,7 +75,7 @@ public class CalculateSales {
 					}
 					commodityMap.put(item[0],item[1]);
 					commoditySaleMap.put(item[0],(long) 0);
-					}
+				}
 			}else{
 				System.out.println("商品定義ファイルが存在しません");
 				return;
@@ -100,18 +100,20 @@ public class CalculateSales {
 	    File file = new File(args[0]);
 		File files[] = file.listFiles();
 		for (int i=0; i<files.length; i++) {
-			if(files[i].isFile() == true && files[i].toString().endsWith(".rcd")){
-					if(files[i].getName().toString().substring(0,8).matches("^[0-9]{8}$") == true){
+
+			if(files[i].isFile() && files[i].toString().endsWith(".rcd")){
+
+					if(files[i].getName().substring(0,8).matches("^[0-9]{8}$")){
 						numberList.add(files[i].getName());
 						int first = Short.parseShort(numberList.get(0).toString().substring(0,8));
 						int volume =numberList.size();
 						int last =Short.parseShort(numberList.get(numberList.size()-1).toString().substring(0,8));
 						if(first + volume - 1 == last){
 							saleList.add(files[i]);
-							}else{
-								System.out.println("売上ファイル名が連番になっていません");
-								return;
-							}
+						}else{
+							System.out.println("売上ファイル名が連番になっていません");
+							return;
+						}
 					}else{
 						System.out.println("売上ファイル名が連番になっていません");
 						return;
