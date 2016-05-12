@@ -26,8 +26,7 @@ public class CalculateSales {
 		try{
 			File file = new File(args[0], "branch.lst");
 			if (args.length != 1){
-				System.out.println("予期せぬエラーが発生しました");
-				return;
+				err();
 			}
 			if (file.exists()){
 				FileReader fr = new FileReader(file);
@@ -46,11 +45,9 @@ public class CalculateSales {
 				return;
 			}
 		}catch(IOException e){
-			System.out.println("予期せぬエラーが発生しました");
-			return;
+			err();
 		}catch(ArrayIndexOutOfBoundsException e){
-			System.out.println("予期せぬエラーが発生しました");
-			return;
+			err();
 		}
 		finally{
 			if (br != null) {
@@ -82,11 +79,9 @@ public class CalculateSales {
 				return;
 			}
 			}catch(IOException e){
-				System.out.println("予期せぬエラーが発生しました");
-				return;
+				err();
 				}catch(ArrayIndexOutOfBoundsException e){
-					System.out.println("予期せぬエラーが発生しました");
-					return;
+					err();
 				}
 		finally{
 			if (br != null) {
@@ -146,23 +141,15 @@ public class CalculateSales {
 					System.out.println( fileName +"の商品コードが不正です");
 					return;
 				}
-				long increment = Long.parseLong(exampleList.get(2));
-				long BrunchIncrement = branchSaleMap.get(exampleList.get(0))+ increment;
-				long CommodityIncrement = commoditySaleMap.get(exampleList.get(1)) + increment;
-
-				branchSaleMap.put(exampleList.get(0).toString(),BrunchIncrement);//支店別売上加算
-				commoditySaleMap.put(exampleList.get(1).toString(),CommodityIncrement);//商品別売上加算
-
-
-				if(branchSaleMap.get(exampleList.get(0)).toString().length() > 10|| commoditySaleMap.get(exampleList.get(1)).toString().length() > 10){
+				if(saleIncrement( branchSaleMap,exampleList, 0 )
+						|| saleIncrement( commoditySaleMap,exampleList, 1 )){
 					System.out.println("合計金額が10桁を超えました");
 					return;
 				}
 			}
 		}
 		catch(IOException e){
-			System.out.println("予期せぬエラーが発生しました");
-			return;
+			err();
 		}
 		finally{
 			if (br != null) {
@@ -172,36 +159,18 @@ public class CalculateSales {
 
 
 		List<Entry<String,Long>> branchEntries = new ArrayList<Entry<String,Long>>(branchSaleMap.entrySet());
-
-		Collections.sort(branchEntries, new Comparator<Entry<String,Long>>() {
-			public int compare(Entry<String,Long> o1, Entry<String, Long> o2) {
-				return o2.getValue().compareTo(o1.getValue());
-			}
-		});
-
-
-		//メソッド呼び出し
+		sort(branchEntries);
         String branchpath = args[0]+File.separator+"branch.out";
-		if(outPutFile(branchpath, branchMap , branchEntries )){
-		}else{
-			System.out.println("予期せぬエラーが発生しました");
-			return;
+		if(outPutFile(branchpath, branchMap , branchEntries ) == false){
+			err();
 		}
 
 
 		List<Entry<String,Long>> commodityEntries = new ArrayList<Entry<String,Long>>(commoditySaleMap.entrySet());
-		Collections.sort(commodityEntries, new Comparator<Entry<String,Long>>() {
-		    public int compare(Entry<String,Long> o1, Entry<String, Long> o2) {
-		    	return o2.getValue().compareTo(o1.getValue());
-		    }
-		});
-
-		//メソッド呼び出し
+		sort(commodityEntries);
 		String commodityPath = args[0]+File.separator+"commodity.out";
-		if(outPutFile(commodityPath, commodityMap , commodityEntries )){
-		}else{
-			System.out.println("予期せぬエラーが発生しました");
-			return;
+		if(outPutFile(commodityPath, commodityMap , commodityEntries ) == false){
+			err();
 		}
 	}
 
@@ -231,5 +200,34 @@ public class CalculateSales {
 		}
 		return false;
 	}
+
+//予期せぬエラー
+	static void err(){
+		System.out.println("予期せぬエラーが発生しました");
+		return;
+	}
+
+//リストを降順に並べる
+	static void sort(List<Entry<String,Long>> entries){
+		Collections.sort(entries, new Comparator<Entry<String,Long>>() {
+		    public int compare(Entry<String,Long> o1, Entry<String, Long> o2) {
+		    	return o2.getValue().compareTo(o1.getValue());
+		    }
+		});
+	}
+
+//売上加算(10桁以下チェック)
+	static boolean saleIncrement(HashMap<String,Long> map ,ArrayList<String> list, int n){
+		long increment = Long.parseLong(list.get(2));
+		long result =  map.get(list.get(n)) + increment;
+		map.put(list.get(n).toString(),result);
+		if(map.get(list.get(n)).toString().length() > 10){
+		}
+		return false;
+	}
+
 }
+
+
+
 
