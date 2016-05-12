@@ -140,15 +140,15 @@ public class CalculateSales {
 		        	exampleList.add(sales);
 		        }
 		        if(exampleList.size() != 3 ){
-		    		System.out.println("<"+ fileName +">のフォーマットが不正です");
+		    		System.out.println(fileName +"のフォーマットが不正です");
 		    		return;
 		        }
 		        if(branchSaleMap.containsKey(exampleList.get(0)) != true ){
-		        	System.out.println("<"+ fileName +">の支店コードが不正です");
+		        	System.out.println( fileName +"の支店コードが不正です");
 		        	return;
 		        }
 		        if(commoditySaleMap.containsKey(exampleList.get(1)) != true ){
-		        	System.out.println("<"+ fileName +">の商品コードが不正です");
+		        	System.out.println( fileName +"の商品コードが不正です");
 		        	return;
 		        }
 		        long j = Long.parseLong(exampleList.get(2));
