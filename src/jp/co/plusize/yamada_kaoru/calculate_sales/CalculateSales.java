@@ -69,7 +69,7 @@ public class CalculateSales {
 	           br = new BufferedReader(fr);
 	           while((commodity = br.readLine()) != null) {
 	        	   String[] item = commodity.split(",");
-	        	   if(item[0].length() !=8 || item.length != 2 || item[0].matches("^SFT[0-9]*$") != true ){
+	        	   if(item[0].length() !=8 || item.length != 2 || item[0].matches("^[0-9a-zA-Z_]*$") != true ){
 	           		System.out.println("商品定義ファイルのフォーマットが不正です");
 	           		return;
 	           	}
