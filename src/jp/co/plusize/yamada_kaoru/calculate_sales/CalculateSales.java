@@ -120,9 +120,6 @@ public class CalculateSales {
 					return;
 				}
 			}
-			}else{
-				System.out.println("売上ファイル名が連番になっていません");
-				return;
 			}
 		}
 
