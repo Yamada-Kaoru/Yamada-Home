@@ -23,10 +23,10 @@ public class CalculateSales {
  		String branchFilePath = args[0]+File.separator+"branch.lst";
  		BufferedReader br = null;
  		if (args.length != 1){
-				System.out.println("予期せぬエラーが発生しました");
-				return;
-			}
- 		if(readFilePutMap(branchFilePath,"^[0-9]{3}$" ,"支店",branchMap,branchSaleMap) == false){
+ 				System.out.println("予期せぬエラーが発生しました");
+ 				return;
+ 			}
+ 			if(readFilePutMap(branchFilePath,"^[0-9]{3}$" ,"支店",branchMap,branchSaleMap) == false){
  			return;
  		}
 
@@ -72,7 +72,7 @@ public class CalculateSales {
  				ArrayList<String> exampleList = new ArrayList<String>();
 
  				FileReader fr = new FileReader(path);
-  		        br = new BufferedReader(fr);
+ 		        br = new BufferedReader(fr);
  				while((sales = br.readLine()) != null) {
  					exampleList.add(sales);
  				}
@@ -191,14 +191,14 @@ public class CalculateSales {
  			return true;
  		}
  			return false;
-  		}
+ 		}
  	//定義ファイル処理
  	public static boolean readFilePutMap(String path, String format,String errMessage,HashMap<String,String> map,HashMap<String,Long> saleMap) throws IOException{
 
-		String str;//読み込んだ内容
-		BufferedReader br = null;
+ 		String str;//読み込んだ内容
+ 		BufferedReader br = null;
 
-		try{
+ 		try{
  			File file = new File(path);
  			if (file.exists()){
  				FileReader fr = new FileReader(file);
@@ -228,9 +228,9 @@ public class CalculateSales {
  				br.close();
  			}
  		}
-		return true;
+ 		return true;
 
-	}
+ 	}
 
 }
 
