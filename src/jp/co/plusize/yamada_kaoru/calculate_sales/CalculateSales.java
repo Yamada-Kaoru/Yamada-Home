@@ -25,17 +25,17 @@ public class CalculateSales {
 			System.out.println("予期せぬエラーが発生しました");
 			return;
 		}
-		String branchFilePath = args[0]+File.separator+"branch.lst";
-			if(readFilePutMap(branchFilePath,"^[0-9]{3}$" ,"支店",branchMap,branchSaleMap) == false){
-				return;
-			}
+		String branchFilePath = args[0] + File.separator + "branch.lst";
+		if(readFilePutMap(branchFilePath , "^[0-9]{3}$" , "支店" , branchMap , branchSaleMap) == false){
+			return;
+		}
 
 		HashMap<String,String> commodityMap = new HashMap<String,String>();//商品マップ作成
 		HashMap<String,Long> commoditySaleMap = new HashMap<String,Long>();//商品売上マップ作成
-		String commodityFilePath = args[0]+File.separator+"commodity.lst";
+		String commodityFilePath = args[0] + File.separator + "commodity.lst";
 
 
-		if(readFilePutMap(commodityFilePath,"^[0-9a-zA-Z_]{8}$" ,"商品",commodityMap,commoditySaleMap) == false){
+		if(readFilePutMap(commodityFilePath , "^[0-9a-zA-Z_]{8}$" , "商品" , commodityMap , commoditySaleMap) == false){
 			return;
 		}
 
@@ -46,7 +46,7 @@ public class CalculateSales {
 		File file = new File(args[0]);
 		File files[] = file.listFiles();
 		for (int i=0; i<files.length; i++) {
-			if(fileTypeSpecification(files ,  i )){
+			if(fileTypeSpecification(files ,  i)){
 				if(files[i].getName().substring(0,8).matches("^[0-9]{8}$")){
 					numberList.add(files[i].getName());
 					if(serialCheck(numberList)){
@@ -76,19 +76,19 @@ public class CalculateSales {
 					list.add(sales);
 				}
 
-				if(list.size() != 3 ){
+				if(list.size() != 3){
 					System.out.println(fileName +"のフォーマットが不正です");
 					return;
 				}
-				if(branchSaleMap.containsKey(list.get(0)) != true ){
-					System.out.println( fileName +"の支店コードが不正です");
+				if(branchSaleMap.containsKey(list.get(0)) != true){
+					System.out.println(fileName +"の支店コードが不正です");
 					return;
 				}
-				if(commoditySaleMap.containsKey(list.get(1)) != true ){
-					System.out.println( fileName +"の商品コードが不正です");
+				if(commoditySaleMap.containsKey(list.get(1)) != true){
+					System.out.println(fileName +"の商品コードが不正です");
 					return;
 				}
-				if(saleIncrement( branchSaleMap,list, 0 ) || saleIncrement( commoditySaleMap,list, 1 ) == true){
+				if(saleIncrement(branchSaleMap , list , 0) || saleIncrement(commoditySaleMap , list , 1) == true){
 					System.out.println("合計金額が10桁を超えました");
 					return;
 				}
@@ -107,7 +107,7 @@ public class CalculateSales {
 		List<Entry<String,Long>> branchEntries = new ArrayList<Entry<String,Long>>(branchSaleMap.entrySet());
 		sort(branchEntries);
 		String branchpath = args[0]+File.separator+"branch.out";
-		if(outPutFile(branchpath, branchMap , branchEntries ) == false){
+		if(outPutFile(branchpath , branchMap , branchEntries) == false){
 			err();
 			return;
 		}
@@ -116,7 +116,7 @@ public class CalculateSales {
 		List<Entry<String,Long>> commodityEntries = new ArrayList<Entry<String,Long>>(commoditySaleMap.entrySet());
 		sort(commodityEntries);
 		String commodityPath = args[0]+File.separator+"commodity.out";
-		if(outPutFile(commodityPath, commodityMap , commodityEntries ) == false){
+		if(outPutFile(commodityPath , commodityMap , commodityEntries) == false){
 			err();
 			return;
 		}
@@ -130,7 +130,7 @@ public class CalculateSales {
 			FileWriter fw = new FileWriter(file);
 			bw = new BufferedWriter(fw);
 			for (Entry<String, Long> e : entries) {
-				bw.write(e.getKey()+","+map.get(e.getKey())+","+ e.getValue());
+				bw.write(e.getKey() + "," + map.get(e.getKey()) + "," + e.getValue());
 				bw.newLine();
 			}
 		}catch (IOException e){
@@ -139,10 +139,10 @@ public class CalculateSales {
 			return false;
 		}
 		finally{
-				if (bw != null) {
-					bw.close();
-					return true;
-				}
+			if (bw != null) {
+				bw.close();
+				return true;
+			}
 		}
 		return false;
 	}
@@ -154,17 +154,17 @@ public class CalculateSales {
 	}
 	//リストを降順に並べる
 	static void sort(List<Entry<String,Long>> entries){
-		Collections.sort(entries, new Comparator<Entry<String,Long>>() {
+		Collections.sort(entries , new Comparator<Entry<String,Long>>() {
 			public int compare(Entry<String,Long> o1, Entry<String, Long> o2) {
 				return o2.getValue().compareTo(o1.getValue());
 			}
 		});
 	}
 	//売上加算(10桁以下チェック)
-	static boolean saleIncrement(HashMap<String,Long> map ,ArrayList<String> list, int n){
+	static boolean saleIncrement(HashMap<String,Long> map , ArrayList<String> list , int n){
 		long increment = Long.parseLong(list.get(2));
 		long result =  map.get(list.get(n)) + increment;
-		map.put(list.get(n).toString(),result);
+		map.put(list.get(n).toString() , result);
 		if(map.get(list.get(n)).toString().length() > 10){
 			return true;
 		}
@@ -183,13 +183,13 @@ public class CalculateSales {
 	}
 	//rcdファイル,12桁チェック
 	static boolean fileTypeSpecification(File[] file, int i ){
-		if(file[i].isFile() && file[i].toString().endsWith(".rcd") && file[i].getName().length()==12){
+		if(file[i].isFile() && file[i].toString().endsWith(".rcd") && file[i].getName().length() == 12){
 			return true;
 		}
 		return false;
 	}
 	//定義ファイル処理
-	public static boolean readFilePutMap(String path, String format,String errMessage,HashMap<String,String> map,HashMap<String,Long> saleMap) throws IOException{
+	public static boolean readFilePutMap(String path , String format , String errMessage , HashMap<String,String> map , HashMap<String,Long> saleMap) throws IOException{
 		String line;//読み込んだ内容
 		BufferedReader br = null;
 		try{
@@ -199,15 +199,15 @@ public class CalculateSales {
 				br = new BufferedReader(fr);
 				while((line = br.readLine()) != null) {
 					String[] item = line.split(",");
-					if(item.length != 2 || item[0].matches(format) != true ){
-						System.out.println(errMessage+"定義ファイルのフォーマットが不正です");
+					if(item.length != 2 || item[0].matches(format) != true){
+						System.out.println(errMessage + "定義ファイルのフォーマットが不正です");
 						return false;
 					}
 					map.put(item[0],item[1]);
 					saleMap.put(item[0],(long) 0);
 				}
 			}else{
-				System.out.println(errMessage+"定義ファイルが存在しません");
+				System.out.println(errMessage + "定義ファイルが存在しません");
 				return false;
 			}
 		}catch(IOException e){
