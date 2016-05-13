@@ -22,12 +22,12 @@ public class CalculateSales {
 		HashMap<String,Long> branchSaleMap = new HashMap<String,Long>();//支店売上マップ作成
 		BufferedReader br = null;
 		if (args.length != 1){
-				System.out.println("予期せぬエラーが発生しました");
-				return;
+			System.out.println("予期せぬエラーが発生しました");
+			return;
 		}
 		String branchFilePath = args[0]+File.separator+"branch.lst";
 			if(readFilePutMap(branchFilePath,"^[0-9]{3}$" ,"支店",branchMap,branchSaleMap) == false){
-			return;
+				return;
 			}
 
 		HashMap<String,String> commodityMap = new HashMap<String,String>();//商品マップ作成
@@ -88,8 +88,7 @@ public class CalculateSales {
 					System.out.println( fileName +"の商品コードが不正です");
 					return;
 				}
-				if(saleIncrement( branchSaleMap,list, 0 )
-						|| saleIncrement( commoditySaleMap,list, 1 ) == true){
+				if(saleIncrement( branchSaleMap,list, 0 ) || saleIncrement( commoditySaleMap,list, 1 ) == true){
 					System.out.println("合計金額が10桁を超えました");
 					return;
 				}
@@ -141,9 +140,9 @@ public class CalculateSales {
 		}
 		finally{
 				if (bw != null) {
-				bw.close();
-				return true;
-			}
+					bw.close();
+					return true;
+				}
 		}
 		return false;
 	}
@@ -179,7 +178,7 @@ public class CalculateSales {
 		int last =Short.parseShort(list.get(list.size()-1).toString().substring(0,8));
 		if(first + volume - 1 == last){
 			return true;
-	}
+		}
 		return false;
 	}
 	//rcdファイル,12桁チェック
@@ -225,6 +224,5 @@ public class CalculateSales {
 		}
 		return true;
 	}
-
 }
 
