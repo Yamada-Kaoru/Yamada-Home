@@ -20,15 +20,15 @@ public class CalculateSales {
 	public static void main(String args[]) throws IOException{
 		HashMap<String,String> branchMap = new HashMap<String,String>();//支店マップ作成
 		HashMap<String,Long> branchSaleMap = new HashMap<String,Long>();//支店売上マップ作成
-		String branchFilePath = args[0]+File.separator+"branch.lst";
 		BufferedReader br = null;
 		if (args.length != 1){
 				System.out.println("予期せぬエラーが発生しました");
 				return;
-			}
+		}
+		String branchFilePath = args[0]+File.separator+"branch.lst";
 			if(readFilePutMap(branchFilePath,"^[0-9]{3}$" ,"支店",branchMap,branchSaleMap) == false){
 			return;
-		}
+			}
 
 		HashMap<String,String> commodityMap = new HashMap<String,String>();//商品マップ作成
 		HashMap<String,Long> commoditySaleMap = new HashMap<String,Long>();//商品売上マップ作成
@@ -110,6 +110,7 @@ public class CalculateSales {
 		String branchpath = args[0]+File.separator+"branch.out";
 		if(outPutFile(branchpath, branchMap , branchEntries ) == false){
 			err();
+			return;
 		}
 
 
@@ -118,6 +119,7 @@ public class CalculateSales {
 		String commodityPath = args[0]+File.separator+"commodity.out";
 		if(outPutFile(commodityPath, commodityMap , commodityEntries ) == false){
 			err();
+			return;
 		}
 	}
 
