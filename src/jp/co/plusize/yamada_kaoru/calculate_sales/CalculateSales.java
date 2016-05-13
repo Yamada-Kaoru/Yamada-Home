@@ -246,16 +246,16 @@ public class CalculateSales {
 		}
 
 //	要素数とコードをチェックする
-	static boolean definitionFileCheck(String str,String format,HashMap<String,String> map,HashMap<String,Long> saleMap){
-		String[] item = str.split(",");
-		if(item.length != 2 || item[0].matches("format") != true){
-			return true;
-		}else{
-			map.put(item[0],item[1]);
-			saleMap.put(item[0],(long) 0);
-		return false;
-		}
-	}
+//	static boolean definitionFileCheck(String str,String format,HashMap<String,String> map,HashMap<String,Long> saleMap){
+//		String[] item = str.split(",");
+//		if(item.length != 2 || item[0].matches("format") != true){
+//			return true;
+//		}else{
+//			map.put(item[0],item[1]);
+//			saleMap.put(item[0],(long) 0);
+//		return false;
+//		}
+//	}
 }
 
 
