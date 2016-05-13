@@ -39,11 +39,11 @@ public class CalculateSales {
 			return;
 		}
 
-	    ArrayList<String> numberList = new ArrayList<String>();//.rcdリスト
-	    ArrayList<File> saleList = new ArrayList<File>();//連番チェック済みリスト
-	    String sales;//ファイルの内容
+		ArrayList<String> numberList = new ArrayList<String>();//.rcdリスト
+		ArrayList<File> saleList = new ArrayList<File>();//連番チェック済みリスト
+		String sales;//ファイルの内容
 
-	    File file = new File(args[0]);
+		File file = new File(args[0]);
 		File files[] = file.listFiles();
 		for (int i=0; i<files.length; i++) {
 			if(fileTypeSpecification(files ,  i )){
