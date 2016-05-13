@@ -71,7 +71,7 @@ public class CalculateSales {
 				ArrayList<String> list = new ArrayList<String>();
 
 				FileReader fr = new FileReader(path);
-		        br = new BufferedReader(fr);
+				br = new BufferedReader(fr);
 				while((sales = br.readLine()) != null) {
 					list.add(sales);
 				}
@@ -151,12 +151,12 @@ public class CalculateSales {
 		System.out.println("予期せぬエラーが発生しました");
 		return;
 	}
- 	//リストを降順に並べる
+	//リストを降順に並べる
 	static void sort(List<Entry<String,Long>> entries){
 		Collections.sort(entries, new Comparator<Entry<String,Long>>() {
-		    public int compare(Entry<String,Long> o1, Entry<String, Long> o2) {
-		    	return o2.getValue().compareTo(o1.getValue());
-		    }
+			public int compare(Entry<String,Long> o1, Entry<String, Long> o2) {
+				return o2.getValue().compareTo(o1.getValue());
+			}
 		});
 	}
 	//売上加算(10桁以下チェック)
@@ -197,13 +197,13 @@ public class CalculateSales {
 				FileReader fr = new FileReader(file);
 				br = new BufferedReader(fr);
 				while((line = br.readLine()) != null) {
-	            	String[] item = line.split(",");
-	            	if(item.length != 2 || item[0].matches(format) != true ){
-	            		System.out.println(errMessage+"定義ファイルのフォーマットが不正です");
-	            		return false;
-	            	}
-	            	map.put(item[0],item[1]);
-	            	saleMap.put(item[0],(long) 0);
+					String[] item = line.split(",");
+					if(item.length != 2 || item[0].matches(format) != true ){
+						System.out.println(errMessage+"定義ファイルのフォーマットが不正です");
+						return false;
+					}
+					map.put(item[0],item[1]);
+					saleMap.put(item[0],(long) 0);
 				}
 			}else{
 				System.out.println(errMessage+"定義ファイルが存在しません");
