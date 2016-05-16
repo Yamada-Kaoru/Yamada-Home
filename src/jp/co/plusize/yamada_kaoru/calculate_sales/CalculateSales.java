@@ -127,13 +127,11 @@ public class CalculateSales {
 			File file  = new File(path);
 			FileWriter fw = new FileWriter(file);
 			bw = new BufferedWriter(fw);
-			for (Entry<String , Long> ent : entries) {
-				bw.write(ent.getKey() + "," + definitionMap.get(ent.getKey()) + "," + ent.getValue());
+			for (Entry<String , Long> content : entries) {
+				bw.write(content.getKey() + "," + definitionMap.get(content.getKey()) + "," + content.getValue());
 				bw.newLine();
 			}
 		} catch(IOException e) {
-			return false;
-		} catch(ArrayIndexOutOfBoundsException e) {
 			return false;
 		} finally {
 			if (bw != null) {
@@ -207,9 +205,6 @@ public class CalculateSales {
 				return false;
 			}
 		} catch(IOException e) {
-			System.out.println("予期せぬエラーが発生しました");
-			return false;
-		} catch(ArrayIndexOutOfBoundsException e) {
 			System.out.println("予期せぬエラーが発生しました");
 			return false;
 		} finally {
