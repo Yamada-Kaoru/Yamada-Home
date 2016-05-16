@@ -26,7 +26,7 @@ public class CalculateSales {
 			return;
 		}
 		String branchFilePath = args[0] + File.separator + "branch.lst";
-		if(readFilePutMap(branchFilePath, "^[0-9]{3}$", "支店", branchMap, branchSaleMap) == false) {
+		if(readFilePutMap(branchFilePath, "^[0-9]{3}$", "支店", branchMap, branchSaleMap)) {
 			return;
 		}
 
@@ -35,7 +35,7 @@ public class CalculateSales {
 		String commodityFilePath = args[0] + File.separator + "commodity.lst";
 
 
-		if(readFilePutMap(commodityFilePath, "^[0-9a-zA-Z_]{8}$", "商品", commodityMap, commoditySaleMap) == false) {
+		if(readFilePutMap(commodityFilePath, "^[0-9a-zA-Z_]{8}$", "商品", commodityMap, commoditySaleMap)) {
 			return;
 		}
 
@@ -46,7 +46,7 @@ public class CalculateSales {
 		File file = new File(args[0]);
 		File files[] = file.listFiles();
 		for (int i=0; i<files.length; i++) {
-			if(fileTypeSpecification(files,  i)) {
+			if(fileTypeSpecification(files[i])) {
 				if(files[i].getName().substring(0, 8).matches("^[0-9]{8}$")) {
 					rcdList.add(files[i].getName());
 					if(serialCheck(rcdList)) {
@@ -78,19 +78,15 @@ public class CalculateSales {
 
 				if(saleList.size() != 3) {
 					System.out.println(fileName + "のフォーマットが不正です");
-					return;
 				}
-				if(branchSaleMap.containsKey(saleList.get(0)) != true) {
+				if(!branchSaleMap.containsKey(saleList.get(0))) {
 					System.out.println(fileName + "の支店コードが不正です");
-					return;
 				}
-				if(commoditySaleMap.containsKey(saleList.get(1)) != true) {
+				if(!commoditySaleMap.containsKey(saleList.get(1))) {
 					System.out.println(fileName + "の商品コードが不正です");
-					return;
 				}
-				if(saleIncrement(branchSaleMap, saleList, 0) || saleIncrement(commoditySaleMap, saleList, 1) == true) {
+				if(saleIncrement(branchSaleMap, saleList, 0) || saleIncrement(commoditySaleMap, saleList, 1)) {
 					System.out.println("合計金額が10桁を超えました");
-					return;
 				}
 			}
 		} catch(IOException e) {
@@ -105,7 +101,7 @@ public class CalculateSales {
 		List<Entry<String, Long>> branchEntries = new ArrayList<Entry<String, Long>>(branchSaleMap.entrySet());
 		sort(branchEntries);
 		String branchpath = args[0] + File.separator + "branch.out";
-		if(outPutFile(branchpath, branchMap, branchEntries) == false) {
+		if(!outPutFile(branchpath, branchMap, branchEntries)) {
 			err();
 			return;
 		}
@@ -114,19 +110,21 @@ public class CalculateSales {
 		List<Entry<String, Long>> commodityEntries = new ArrayList<Entry<String, Long>>(commoditySaleMap.entrySet());
 		sort(commodityEntries);
 		String commodityPath = args[0] + File.separator + "commodity.out";
-		if(outPutFile(commodityPath, commodityMap, commodityEntries) == false) {
+		if(!outPutFile(commodityPath, commodityMap, commodityEntries)) {
 			err();
 			return;
 		}
 	}
 
 	//ファイルに出力
-	static boolean outPutFile(String path, HashMap<String, String> definitionMap, List<Entry<String, Long>> entries)
-			throws IOException {
+	static boolean outPutFile(String path, HashMap<String, String> definitionMap,
+			List<Entry<String, Long>> entries) throws IOException {
+		FileWriter fw;
 		BufferedWriter bw = null;
+
 		try{
 			File file  = new File(path);
-			FileWriter fw = new FileWriter(file);
+			fw = new FileWriter(file);
 			bw = new BufferedWriter(fw);
 			for (Entry<String, Long> content : entries) {
 				bw.write(content.getKey() + "," + definitionMap.get(content.getKey()) + "," + content.getValue());
@@ -137,10 +135,9 @@ public class CalculateSales {
 		} finally {
 			if (bw != null) {
 				bw.close();
-				return true;
 			}
 		}
-		return false;
+		return true;
 	}
 
 	//予期せぬエラー
@@ -157,14 +154,11 @@ public class CalculateSales {
 		});
 	}
 	//売上加算(10桁以下チェック)
-	static boolean saleIncrement(HashMap<String, Long> saleMap, ArrayList<String> confirmingList, int n) {
+	static boolean saleIncrement(HashMap<String, Long> saleMap, ArrayList<String> confirmingList, int number) {
 		long increment = Long.parseLong(confirmingList.get(2));
-		long result =  saleMap.get(confirmingList.get(n)) + increment;
-		saleMap.put(confirmingList.get(n).toString(), result);
-		if(saleMap.get(confirmingList.get(n)).toString().length() > 10) {
-			return true;
-		}
-		return false;
+		long result =  saleMap.get(confirmingList.get(number)) + increment;
+		saleMap.put(confirmingList.get(number).toString(), result);
+		return(saleMap.get(confirmingList.get(number)).toString().length() > 10); 
 	}
 
 	//リストの連番チェック
@@ -172,15 +166,12 @@ public class CalculateSales {
 		int first = Short.parseShort(checkList.get(0).toString().substring(0, 8));
 		int volume =checkList.size();
 		int last =Short.parseShort(checkList.get(checkList.size()-1).toString().substring(0, 8));
-		if(first + volume - 1 == last) {
-			return true;
+		return(first + volume - 1 == last) ;
 		}
-		return false;
-	}
 
 	//rcdかつ12桁のファイルチェック
-	static boolean fileTypeSpecification(File[] checkFile, int i) {
-		return(checkFile[i].isFile() && checkFile[i].toString().endsWith(".rcd") && checkFile[i].getName().length() == 12);
+	static boolean fileTypeSpecification(File checkFile) {
+		return(checkFile.isFile() && checkFile.toString().endsWith(".rcd") && checkFile.getName().length() == 12);
 	}
 
 	//定義ファイル処理
@@ -188,10 +179,11 @@ public class CalculateSales {
 			HashMap<String, String> definitionMap, HashMap<String, Long> saleMap) throws IOException {
 		String line;//読み込んだ内容
 		BufferedReader br = null;
+		FileReader fr;
 		try{
 			File file = new File(path);
 			if (file.exists()) {
-				FileReader fr = new FileReader(file);
+				fr = new FileReader(file);
 				br = new BufferedReader(fr);
 				while((line = br.readLine()) != null) {
 					String[] item = line.split(",");
@@ -208,7 +200,6 @@ public class CalculateSales {
 			}
 		} catch(IOException e) {
 			err();
-			return false;
 		} finally {
 			if (br != null) {
 				br.close();
