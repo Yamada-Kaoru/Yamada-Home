@@ -26,7 +26,7 @@ public class CalculateSales {
 			return;
 		}
 		String branchFilePath = args[0] + File.separator + "branch.lst";
-		if(readFilePutMap(branchFilePath, "^[0-9]{3}$", "支店", branchMap, branchSaleMap)) {
+		if(!readFilePutMap(branchFilePath, "^[0-9]{3}$", "支店", branchMap, branchSaleMap)) {
 			return;
 		}
 
@@ -35,7 +35,7 @@ public class CalculateSales {
 		String commodityFilePath = args[0] + File.separator + "commodity.lst";
 
 
-		if(readFilePutMap(commodityFilePath, "^[0-9a-zA-Z_]{8}$", "商品", commodityMap, commoditySaleMap)) {
+		if(!readFilePutMap(commodityFilePath, "^[0-9a-zA-Z_]{8}$", "商品", commodityMap, commoditySaleMap)) {
 			return;
 		}
 
@@ -63,14 +63,14 @@ public class CalculateSales {
 		}
 
 
-
+		FileReader fr = null;
 		try{
 			for(int i = 0; i<saleFileList.size(); i++) {
 				String path = saleFileList.get(i).toString();
 				String fileName = files[i].getName().toString();
 				ArrayList<String> saleList  = new ArrayList<String>();
 
-				FileReader fr = new FileReader(path);
+				fr = new FileReader(path);
 				br = new BufferedReader(fr);
 				while((sales = br.readLine()) != null) {
 					saleList.add(sales);
@@ -78,21 +78,26 @@ public class CalculateSales {
 
 				if(saleList.size() != 3) {
 					System.out.println(fileName + "のフォーマットが不正です");
+					return;
 				}
 				if(!branchSaleMap.containsKey(saleList.get(0))) {
 					System.out.println(fileName + "の支店コードが不正です");
+					return;
 				}
 				if(!commoditySaleMap.containsKey(saleList.get(1))) {
 					System.out.println(fileName + "の商品コードが不正です");
+					return;
 				}
 				if(saleIncrement(branchSaleMap, saleList, 0) || saleIncrement(commoditySaleMap, saleList, 1)) {
 					System.out.println("合計金額が10桁を超えました");
+					return;
 				}
 			}
 		} catch(IOException e) {
 			err();
 		} finally {
 			if (br != null){
+				fr.close();
 				br.close();
 			}
 		}
@@ -158,7 +163,7 @@ public class CalculateSales {
 		long increment = Long.parseLong(confirmingList.get(2));
 		long result =  saleMap.get(confirmingList.get(number)) + increment;
 		saleMap.put(confirmingList.get(number).toString(), result);
-		return(saleMap.get(confirmingList.get(number)).toString().length() > 10); 
+		return(saleMap.get(confirmingList.get(number)).toString().length() > 10);
 	}
 
 	//リストの連番チェック
@@ -187,7 +192,7 @@ public class CalculateSales {
 				br = new BufferedReader(fr);
 				while((line = br.readLine()) != null) {
 					String[] item = line.split(",");
-					if(item.length != 2 || item[0].matches(format) != true) {
+					if(item.length != 2 || !item[0].matches(format)) {
 						System.out.println(errMessage + "定義ファイルのフォーマットが不正です");
 						return false;
 					}
