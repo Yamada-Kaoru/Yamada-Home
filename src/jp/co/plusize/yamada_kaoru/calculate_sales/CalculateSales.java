@@ -47,7 +47,7 @@ public class CalculateSales {
 		File files[] = file.listFiles();
 		for (int i=0; i<files.length; i++) {
 			if(fileTypeSpecification(files ,  i)){
-				if(files[i].getName().substring(0 ,  8).matches("^[0-9]{8}$")){
+				if(files[i].getName().substring(0 , 8).matches("^[0-9]{8}$")){
 					rcdList.add(files[i].getName());
 					if(serialCheck(rcdList)){
 						saleList.add(files[i]);
@@ -181,7 +181,7 @@ public class CalculateSales {
 	}
 
 	//rcdかつ12桁のファイルチェック
-	static boolean fileTypeSpecification(File[] file, int i ){
+	static boolean fileTypeSpecification(File[] file, int i){
 		return(file[i].isFile() && file[i].toString().endsWith(".rcd") && file[i].getName().length() == 12);
 	}
 
