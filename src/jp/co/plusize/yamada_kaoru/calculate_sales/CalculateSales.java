@@ -96,8 +96,7 @@ public class CalculateSales {
 		}
 		catch(IOException e){
 			err();
-		}
-		finally{
+		}finally{
 			if (br != null) {
 				br.close();
 			}
